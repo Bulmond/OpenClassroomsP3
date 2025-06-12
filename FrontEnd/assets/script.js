@@ -19,3 +19,43 @@ function generateWorks(works) {
 }
 
 generateWorks(works);
+
+const buttonAll= document.querySelector(".btn-all")
+
+buttonAll.addEventListener("click", function () {
+	document.querySelector(".gallery").innerHTML = "";
+	generateWorks(works);
+});
+
+const buttonObj = document.querySelector(".btn-objects")
+
+buttonObj.addEventListener("click", function () {
+	const filteredWorks = works.filter(function (work) {
+		return work.category.id == 1;
+	});
+	document.querySelector(".gallery").innerHTML = "";
+    console.log(filteredWorks);
+	generateWorks(filteredWorks);
+});
+
+const buttonApts = document.querySelector(".btn-apts")
+
+buttonApts.addEventListener("click", function () {
+	const filteredWorks = works.filter(function (work) {
+		return work.category.id == 2;
+	});
+	document.querySelector(".gallery").innerHTML = "";
+    console.log(filteredWorks);
+	generateWorks(filteredWorks);
+});
+
+const buttonHotels = document.querySelector(".btn-hotels")
+
+buttonHotels.addEventListener("click", function () {
+	const filteredWorks = works.filter(function (work) {
+		return work.category.id == 3;
+	});
+	document.querySelector(".gallery").innerHTML = "";
+    console.log(filteredWorks);
+	generateWorks(filteredWorks);
+});
