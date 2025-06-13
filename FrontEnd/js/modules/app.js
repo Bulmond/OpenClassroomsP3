@@ -20,46 +20,39 @@ function generateWorks(works) {
     }
 }
 
-function filterButtons(works, categories) {
+function buttonEventListener(button, category) {
+    button.addEventListener("click", function () {
+        const filteredWorks = works.filter(function (work) {
+            return work.category.name == category;
+        });
+        document.querySelector(".gallery").innerHTML = "";
+        if(category === "All")
+            generateWorks(works);
+        else
+            generateWorks(filteredWorks);
+    });
+}
+
+function createButtons() {
+    const categoryNames = categories.map(category => category.name);
+    
+    const filterDiv = document.querySelector(".filters");
+    const buttonElement = document.createElement("button");
+    buttonElement.setAttribute("class", "All")
+    buttonElement.innerText = "Tous";
+
+    filterDiv.appendChild(buttonElement);
+    buttonEventListener(buttonElement, "All");
+
     for(let i = 0; i < categories.length; i++) {
-        console.log(categories[i]);
         const filterDiv = document.querySelector(".filters");
         const buttonElement = document.createElement("button");
-        buttonElement.dataset.id = categories[i].id;
+        buttonElement.setAttribute("class", `${categoryNames[i]}`);
         buttonElement.innerText = categories[i].name;
 
         filterDiv.appendChild(buttonElement);
+        buttonEventListener(buttonElement, categoryNames[i]);
     }
-
-    console.log(buttonElement.innerText);
-    /* buttonAll.addEventListener("click", function () {
-        document.querySelector(".gallery").innerHTML = "";
-        generateWorks(works);
-    });
-    
-    document.querySelector("#1").addEventListener("click", function () {
-        const filteredWorks = works.filter(function (work) {
-            return work.category.id == 1;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        generateWorks(filteredWorks);
-    });
-    
-    document.querySelector("#3").addEventListener("click", function () {
-        const filteredWorks = works.filter(function (work) {
-            return work.category.id == 2;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        generateWorks(filteredWorks);
-    });
-    
-    document.querySelector("#2").addEventListener("click", function () {
-        const filteredWorks = works.filter(function (work) {
-            return work.category.id == 3;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        generateWorks(filteredWorks);
-    }); */
 }
 
-export {works, categories, generateWorks, filterButtons};
+export {works, generateWorks, createButtons};
