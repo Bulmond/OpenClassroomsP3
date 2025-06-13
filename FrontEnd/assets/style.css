@@ -23,6 +23,10 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
+html {
+	height: 100%;
+}
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -48,10 +52,14 @@ table {
 }
 /** end reset css**/
 body {
+	display: flex;
+	flex-direction: column;
 	max-width: 1140px;
+	height: 100%;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #fffef8;
 }
 header {
 	display: flex;
@@ -165,7 +173,7 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -211,6 +219,10 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+footer {
+	margin-top: auto;
+	background-color: #fff;
+}
 
 .login {
 	display: flex;
@@ -220,6 +232,7 @@ footer nav ul {
 }
 
 .login h1 {
+	color: #1D6154;
 	font-size: 30px;
 }
 
@@ -244,4 +257,7 @@ footer nav ul {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
+.login a {
+	align-self: center;
+	color: black;
+}
