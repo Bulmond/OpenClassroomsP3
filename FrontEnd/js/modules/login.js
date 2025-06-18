@@ -2,8 +2,7 @@ const emailInput = document.querySelector("[name=email]");
 const passwordInput = document.querySelector("[name=password]");
 
 let errors = [];
-const errorMessage = document.createElement("p");
-errorMessage.setAttribute("class","incorrect");
+const errorMessage = document.querySelector(".error-message");
 
 const LOGIN = (function (){
     function loginUser() {
@@ -26,7 +25,8 @@ const LOGIN = (function (){
             
             if(response.ok) {
                 const bodyResponse = await response.json();
-                window.location.href = "../index.html";
+                window.localStorage.setItem("token", JSON.stringify(bodyResponse.token));
+                window.location.href = "../index.html";            
             } else {
                 const errorData = await response.json();
                 throw errorData;
@@ -52,7 +52,6 @@ const LOGIN = (function (){
             if(errors.length > 0 && errors[1] === "Vos identifiants sont incorrects. ")
                 errors.pop();
             errorMessage.innerText = errors.join("");
-            document.querySelector(".login").appendChild(errorMessage);
         }
     });
     }
