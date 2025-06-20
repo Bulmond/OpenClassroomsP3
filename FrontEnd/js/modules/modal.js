@@ -45,6 +45,21 @@ async function getModalWorks() {
 
         const iconContainer = document.createElement("div");
         iconContainer.classList.add("modal-icon");
+        iconContainer.addEventListener("click", async () => {
+           try {
+                const res = await fetch(`http://localhost:5678/api/works/${work.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-type": "application/json",
+                        "accept": "*/*",
+                        "Authorization": `Bearer ${localStorage.token}`
+                    }
+                });
+                if(res.ok)
+                    console.log(`${work.title}(id:${work.id}) deleted succesfully`);
+           } catch (error) {
+                console.error(error);
+           }});
         const iconElement = document.createElement("i");
         iconElement.classList.add("fa-solid", "fa-trash-can");
         

@@ -25,7 +25,7 @@ const LOGIN = (function (){
             
             if(response.ok) {
                 const bodyResponse = await response.json();
-                window.localStorage.setItem("token", JSON.stringify(bodyResponse.token));
+                window.localStorage.setItem("token", bodyResponse.token);
                 window.location.href = "../index.html";            
             } else {
                 const errorData = await response.json();
