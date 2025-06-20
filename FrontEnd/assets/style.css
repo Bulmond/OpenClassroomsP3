@@ -3,19 +3,87 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -27,50 +95,72 @@ time, mark, audio, video {
 html {
 	height: fit-content;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
-ol, ul {
+
+ol,
+ul {
 	list-style: none;
 }
-blockquote, q {
+
+blockquote,
+q {
 	quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 /** end reset css**/
 body {
 	display: flex;
 	flex-direction: column;
 	max-width: 1140px;
 	height: 100%;
-	margin:auto;
-	font-family: 'Work Sans' ;
+	margin: auto;
+	font-family: 'Work Sans';
 	font-size: 14px;
 	background-color: #fffef8;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
 }
+
 section {
 	margin: 50px 0
 }
 
-h1{
+h1 {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Syne';
@@ -79,29 +169,32 @@ h1{
 	color: #B1663C
 }
 
-h1 > span {
+h1>span {
 	font-family: 'Work Sans';
-	font-size:10px;
+	font-size: 10px;
 	letter-spacing: 0.1em;
-;
+	;
 }
 
-h2{
+h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
 	color: #1D6154
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
 
 }
+
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
+
 nav li a {
 	text-decoration: none;
 	color: inherit;
@@ -110,13 +203,16 @@ nav li a {
 li:hover {
 	font-weight: 800;
 }
+
 #introduction {
 	display: flex;
 	align-items: center;
 }
+
 #introduction figure {
 	flex: 1
 }
+
 #introduction img {
 	display: block;
 	margin: auto;
@@ -126,6 +222,7 @@ li:hover {
 #introduction article {
 	flex: 1
 }
+
 #introduction h2 {
 	margin-bottom: 1em;
 }
@@ -133,6 +230,7 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
@@ -145,6 +243,7 @@ li:hover {
 	gap: 10px;
 	margin-bottom: 30px;
 }
+
 .filters button {
 	min-width: 100px;
 	font-weight: 700;
@@ -156,6 +255,7 @@ li:hover {
 	border-radius: 60px;
 	padding: 9px;
 }
+
 .filters button:hover {
 	color: white;
 	background-color: #1D6154;
@@ -173,20 +273,24 @@ li:hover {
 	width: 100%;
 
 }
+
 #contact {
 	width: 50%;
 	margin: auto;
 }
-#contact > * {
+
+#contact>* {
 	text-align: center;
 
 }
-#contact h2{
+
+#contact h2 {
 	margin-bottom: 20px;
 }
+
 #contact form {
 	text-align: left;
-	margin-top:30px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
@@ -197,23 +301,25 @@ li:hover {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 #contact label {
 	margin: 2em 0 1em 0;
 }
+
 #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
-	margin : 2em auto ;
+	margin: 2em auto;
 	width: 180px;
 	text-align: center;
-	border-radius: 60px ;
+	border-radius: 60px;
 }
 
 footer nav ul {
@@ -221,6 +327,7 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+
 footer {
 	margin-top: auto;
 	background-color: #fff;
@@ -232,6 +339,7 @@ footer {
 	align-items: center;
 	margin-bottom: auto;
 }
+
 /* Login page */
 
 .login h1 {
@@ -242,7 +350,7 @@ footer {
 .login form {
 	width: 24vw;
 	text-align: left;
-	margin-top:30px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
@@ -253,17 +361,21 @@ footer {
 	border: 2px solid transparent;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 .login label {
 	margin: 2em 0 1em 0;
 }
+
 .login textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 .login a {
 	align-self: center;
 	color: black;
 }
+
 input.incorrect {
 	border-color: #fa6d80;
 }
@@ -272,6 +384,7 @@ p.error-message {
 	margin-top: 40px;
 	color: #fa6d80;
 }
+
 /* Admin page */
 
 .edition {
@@ -279,16 +392,16 @@ p.error-message {
 }
 
 div.edition {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	gap: 12px;
-    background: black;
-    padding: 19px;
-    color: white;
-    position: sticky;
-    width: 100%;
-    top: 0;
+	background: black;
+	padding: 19px;
+	color: white;
+	position: sticky;
+	width: 100%;
+	top: 0;
 }
 
 .section-title {
@@ -324,7 +437,7 @@ a.edition {
 .modal-wrapper {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
 	width: 630px;
 	height: 668px;
 	align-items: center;
@@ -375,18 +488,20 @@ i.fa-solid.fa-trash-can {
 	color: #fff;
 }
 
-.modal-gallery div img{
+.modal-gallery div img {
 	max-width: 76.86px;
 	max-height: 102.57px;
 }
 
-
-.modal-separator {
-	margin: 38px 0;
+hr {
+	width: 420px;
+	border: 0;
+	border: 1px solid #B3B3B3;
 }
 
 .modal-button {
 	width: max-content;
+	margin-bottom: 45px;
 	font-weight: 700;
 	font-family: 'Syne';
 	font-size: 16px;

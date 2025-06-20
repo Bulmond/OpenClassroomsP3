@@ -1,10 +1,13 @@
-import { fetchData } from "./app.js";
+import { fetchData, getWorks } from "./app.js";
 export { getModal };
+
+const url = "http://localhost:5678/api/works";
+let works = await fetchData(url);
 
 const getModal = function () {
     let modal = null;
     const modalOpen = document.querySelector("a.edition");
-    const openModal = function(e) {
+    const openModal = function (e) {
         e.preventDefault();
         modal = document.querySelector(e.target.getAttribute("href"));
         modal.style.display = "flex";
@@ -23,46 +26,58 @@ const getModal = function () {
         modal = null;
     }
 
-    
+
     modalOpen.addEventListener("click", openModal);
-    getModalWorks();
-    
+    getModalWorks(works);
+
 }
 
-const stopPropagation = function(e) {
+const stopPropagation = function (e) {
     e.stopPropagation();
 }
 
-async function getModalWorks() {
-    const url = "http://localhost:5678/api/works";
-    const works = await fetchData(url);
+function addIconListener(iconContainer, id) {
+    let newWorks = null;
+    iconContainer.addEventListener("click", async () => {
+        try {
+            const res = await fetch(`http://localhost:5678/api/works/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-type": "application/json",
+                    "accept": "*/*",
+                    "Authorization": `Bearer ${localStorage.token}`
+                }
+            });
+            if (res.ok) {
+                console.log(`(id:${id}) deleted succesfully`);
+                newWorks = await fetchData(url);
+                //console.log(newWorks);
+                document.querySelector(".gallery").innerHTML = "";
+                getWorks(newWorks);
+                document.querySelector(".modal-gallery").innerHTML = "";
+                getModalWorks(newWorks);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    });
+}
+
+function getModalWorks(works) {
     for (let i = 0; i < works.length; i++) {
         const work = works[i];
 
         const modalGallery = document.querySelector(".modal-gallery");
-        const container = document.createElement("div");  
+        const container = document.createElement("div");
         container.classList.add("modal-image-container");
 
         const iconContainer = document.createElement("div");
         iconContainer.classList.add("modal-icon");
-        iconContainer.addEventListener("click", async () => {
-           try {
-                const res = await fetch(`http://localhost:5678/api/works/${work.id}`, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-type": "application/json",
-                        "accept": "*/*",
-                        "Authorization": `Bearer ${localStorage.token}`
-                    }
-                });
-                if(res.ok)
-                    console.log(`${work.title}(id:${work.id}) deleted succesfully`);
-           } catch (error) {
-                console.error(error);
-           }});
+        addIconListener(iconContainer, work.id);
+        /* console.log(works); */
         const iconElement = document.createElement("i");
         iconElement.classList.add("fa-solid", "fa-trash-can");
-        
+
         const imageElement = document.createElement("img");
         imageElement.src = work.imageUrl;
 
