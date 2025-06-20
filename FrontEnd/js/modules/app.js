@@ -86,7 +86,7 @@ function getAdminElements() {
     });
 
     const editorLink = document.createElement("a");
-    editorLink.href = "#";
+    editorLink.href = "#modal";
     editorLink.setAttribute("class", "edition")
     editorLink.innerText = "modifier"
 

@@ -1,5 +1,6 @@
 import { getWorks, getButtons, fetchData, getAdmin} from "./modules/app.js";
 import loginUser from "./modules/login.js";
+import { getModal } from "./modules/modal.js"
 
 const APP = (async function () {
 	const works = await fetchData("http://localhost:5678/api/works");
@@ -9,6 +10,7 @@ const APP = (async function () {
 		case location.pathname === "/FrontEnd/index.html" && token !== null:
 			getWorks(works);
 			getAdmin();
+			getModal();
 			break;
 		case location.pathname === "/FrontEnd/index.html":
 			getWorks(works);
