@@ -351,32 +351,35 @@ a.edition {
 	column-gap: 9px;
 }
 
+.modal-image-container {
+	width: 76.86px;
+	height: 102.57px;
+	display: flex;
+	justify-content: flex-end;
+}
+
 .modal-icon {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	position: fixed;
-	max-width: 17px;
-	max-height: 17px;
+	margin: 5px;
+	width: 17px;
+	height: 17px;
 	border-radius: 3px;
 	background-color: #000;
 }
 
 i.fa-solid.fa-trash-can {
-	font-size: 0.85em;
+	font-size: 0.75em;
 	color: #fff;
 }
 
 .modal-gallery div img{
 	max-width: 76.86px;
 	max-height: 102.57px;
-	object-fit: cover;
 }
 
-.modal-gallery div {
-	width: 76.86px;
-	height: 102.57px;
-}
 
 .modal-separator {
 	margin: 38px 0;

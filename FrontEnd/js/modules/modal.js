@@ -38,18 +38,22 @@ async function getModalWorks() {
     const works = await fetchData(url);
     for (let i = 0; i < works.length; i++) {
         const work = works[i];
+
         const modalGallery = document.querySelector(".modal-gallery");
-        const container = document.createElement("div");
+        const container = document.createElement("div");  
+        container.classList.add("modal-image-container");
+
         const iconContainer = document.createElement("div");
         iconContainer.classList.add("modal-icon");
         const iconElement = document.createElement("i");
         iconElement.classList.add("fa-solid", "fa-trash-can");
+        
         const imageElement = document.createElement("img");
         imageElement.src = work.imageUrl;
 
-        container.appendChild(imageElement);
         iconContainer.appendChild(iconElement);
         container.appendChild(iconContainer);
+        container.appendChild(imageElement);
         modalGallery.appendChild(container);
     }
 }
