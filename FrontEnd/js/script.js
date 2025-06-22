@@ -3,7 +3,7 @@ import loginUser from "./modules/login.js";
 import { getModal } from "./modules/modal.js"
 
 const APP = (async function () {
-	const works = await fetchData("http://localhost:5678/api/works");
+	let works = await fetchData("http://localhost:5678/api/works");
 	const token = window.localStorage.getItem("token");
 	/* getAdmin(); */
 	switch (true) {

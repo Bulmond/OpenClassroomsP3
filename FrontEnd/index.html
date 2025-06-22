@@ -51,9 +51,28 @@
 			</div>
 			<div id="modal">
 				<div class="modal-wrapper modal-stop">
-					<span class="modal-close">&times;</span>
+					<div class="modal-header">
+						<i class="fa-solid fa-arrow-left modal-back"></i>
+						<span class="modal-close">&times;</span>
+					</div>
 					<h3 class="modal-title">Galerie photo</h3>
-					<div class="modal-gallery">
+					<div class="modal-content">
+						<form>
+							<div class="form-image">
+								<label for="image-upload"><i class="fa-regular fa-image"></i></label>
+								<input id="image-upload" type="file" accept="image/jpg, image/png">
+								<span>jpg, png : 4mo max</span>
+							</div>
+							<div class="form-input">
+								<label for="title">Titre</label>
+								<input name="title" type="text">
+								<label for="category">Catégorie</label>
+								<select name="category" id="category">
+									<option value="">Volvo</option>
+									<option value="">Saab</option>
+								</select>
+							</div>
+						</form>
 					</div>
 					<hr>
 					<button class="modal-button">Ajouter une photo</button>

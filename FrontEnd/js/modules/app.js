@@ -23,7 +23,7 @@ function getWorks(works) {
 
 async function buttonEventListener(button, category) {
     const url = "http://localhost:5678/api/works";
-    const works = await fetchData(url);
+    let works = await fetchData(url);
 
     button.addEventListener("click", function () {
         const filteredWorks = works.filter(function (work) {
@@ -62,41 +62,48 @@ async function getButtons() {
     }
 }
 
-function getAdminElements() {
+function getAdminHeader() {
     const fixedHeader = document.createElement("div");
     fixedHeader.setAttribute("class", "edition");
 
     const headerText = document.createElement("p");
     headerText.innerText = "Mode édition";
 
-    const editionIcon = [document.createElement("i"), document.createElement("i")];
-    editionIcon.forEach (icon => {
-        icon.classList.add("fa-regular", "fa-pen-to-square");
-    })
+    const editionIcon = document.createElement("i");
+    editionIcon.classList.add("fa-regular", "fa-pen-to-square");
 
-    fixedHeader.prepend(editionIcon[0]);
+    fixedHeader.prepend(editionIcon);
     fixedHeader.appendChild(headerText);
     document.querySelector("html").prepend(fixedHeader);
+}
 
+function getLogoutButton() {
     const logoutButton = document.querySelector("#login a");
     logoutButton.innerText = "logout";
     logoutButton.href = "index.html";
     logoutButton.addEventListener("click", () => {
         window.localStorage.removeItem("token");
     });
+}
+
+function getAdminEdition() {
+
+    const editionIcon = document.createElement("i");
+    editionIcon.classList.add("fa-regular", "fa-pen-to-square");
 
     const editorLink = document.createElement("a");
     editorLink.href = "#modal";
     editorLink.setAttribute("class", "edition")
     editorLink.innerText = "modifier"
 
-    editorLink.prepend(editionIcon[1]);
+    editorLink.prepend(editionIcon);
     document.querySelector(".section-title").appendChild(editorLink);
 }
 
 function getAdmin() {
-    getAdminElements();
-
+    getAdminHeader();
+    getLogoutButton();
+    getAdminEdition();
 }
 
 export { getWorks, getButtons, fetchData, getAdmin};
