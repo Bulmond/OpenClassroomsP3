@@ -6,7 +6,7 @@ let works = await APP.fetchData(url);
 let categories = await APP.fetchData("http://localhost:5678/api/categories");
 
 const MODAL = {
-    getModal: function() {
+    getModal: function () {
         let modal = null;
         const modalOpen = document.querySelector("a.edition");
         const modalButton = document.querySelector(".modal-button");
@@ -18,7 +18,7 @@ const MODAL = {
             modal.querySelector(".modal-close").addEventListener("click", closeModal);
             modal.querySelector(".modal-stop").addEventListener("click", MODAL.stopPropagation);
         }
-    
+
         const closeModal = function (e) {
             if (modal === null) return;
             e.preventDefault();
@@ -28,19 +28,19 @@ const MODAL = {
             modal.querySelector(".modal-stop").removeEventListener("click", MODAL.stopPropagation);
             modal = null;
         }
-    
-    
+
+
         modalOpen.addEventListener("click", openModal);
         modalButton.addEventListener("click", MODAL.getNewWorks);
         MODAL.getModalWorks(works);
-    
+
     },
-    
-    stopPropagation: function(e) {
+
+    stopPropagation: function (e) {
         e.stopPropagation();
     },
-    
-    addIconListener: function(iconContainer, id) {
+
+    addIconListener: function (iconContainer, id) {
         let newWorks = null;
         iconContainer.addEventListener("click", async () => {
             try {
@@ -65,161 +65,164 @@ const MODAL = {
             }
         });
     },
-    
-    getModalWorks: function(works) {
+
+    getModalWorks: function (works) {
         for (let i = 0; i < works.length; i++) {
             const work = works[i];
-    
+
             const modalGallery = document.querySelector(".modal-content");
             const container = document.createElement("div");
             container.classList.add("modal-image-container");
-    
+
             const iconContainer = document.createElement("div");
             iconContainer.classList.add("modal-icon");
             MODAL.addIconListener(iconContainer, work.id);
-    
+
             const iconElement = document.createElement("i");
             iconElement.classList.add("fa-solid", "fa-trash-can");
-    
+
             const imageElement = document.createElement("img");
             imageElement.src = work.imageUrl;
-    
+
             iconContainer.appendChild(iconElement);
             container.appendChild(iconContainer);
             container.appendChild(imageElement);
             modalGallery.appendChild(container);
         }
     },
-    
-    getNewWorks: function() {
+
+    getNewWorks: function () {
         const modalButton = document.querySelector(".modal-button");
         document.querySelector(".modal-title").innerText = "Ajout photo";
         modalButton.innerText = "Valider";
         modalButton.removeEventListener("click", MODAL.getNewWorks);
-    
+
         const modalBack = document.querySelector(".modal-back");
         modalBack.style.display = "inline-block";
-    
-        
+
+
         const modalContent = document.querySelector(".modal-content");
         modalContent.classList.add("modal-form");
         modalContent.innerHTML = "";
         modalButton.setAttribute("form", "#add-work");
+        modalButton.setAttribute("type", "submit");
         modalBack.addEventListener("click", MODAL.getPreviousPage);
-        if(modalButton.hasAttribute("form")) {
-            modalButton.addEventListener("click", MODAL.submitModalForm);
-        } else {
-            console.log("hello");
+        if (modalButton.hasAttribute("form")) {
+            modalButton.addEventListener("submit", MODAL.submitModalForm);
         }
-        
         const modalForm = MODAL.getModalForm();
         modalContent.appendChild(modalForm);
     },
-    
-    submitModalForm: async function() {
-        const modalForm = document.getElementById("add-work");
-        const formData = new FormData(modalForm);
-    
-        /* for (const value of formData.values()) {
-            console.log(value);
-          } */
-        let res = await fetch(url, {
-            method:"POST",
-            headers: {
-                "Authorization": `Bearer ${localStorage.token}` 
-            },
-            body: formData
+
+    submitModalForm: async function (e) {
+        e.preventDefault
+        const formData = new FormData();
+
+        formData.append("title", document.getElementById("title").value);
+        formData.append("category", document.getElementById("category").value);
+        formData.append("image", document.getElementById("image-upload").files[0]);
+        try {
+            let res = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.token}`
+                },
+                body: formData
         });
-    
-        console.log(await res)
+
+            if (!res.ok) throw new Error("Work was not added to the gallery");
+        } catch (err) {
+            console.warn(err.message);
+        }
     },
-    
-    getPreviousPage: function() {
+
+    getPreviousPage: function () {
         document.querySelector(".modal-back").removeEventListener("click", MODAL.getPreviousPage);
         document.querySelector(".modal-title").innerText = "Galerie photos";
         document.querySelector(".modal-button").innerText = "Ajouter une photo";
         document.querySelector(".modal-button").removeAttribute("form");
+        document.querySelector(".modal-button").removeAttribute("type");
         document.querySelector(".modal-button").removeEventListener("click", MODAL.submitModalForm);
         document.querySelector(".modal-content").innerHTML = "";
         document.querySelector(".modal-content").classList.remove("modal-form")
         MODAL.getModalWorks(works);
         document.querySelector(".modal-button").addEventListener("click", MODAL.getNewWorks);
     },
-    
-    getModalForm: function() {
+
+    getModalForm: function () {
         const modalForm = document.createElement("form");
         modalForm.setAttribute("id", "add-work");
         modalForm.setAttribute("name", "add-work");
         modalForm.setAttribute("enctype", "multipart/form-data");
         const formImage = MODAL.getFormImageEl();
         const formInput = MODAL.getFormInputEl();
-    
+
         modalForm.append(formImage, formInput);
         return modalForm;
     },
-    
-    getFormInputEl: function() {
+
+    getFormInputEl: function () {
         const formInputElement = document.createElement("div");
         formInputElement.classList.add("form-input");
-    
+
         /* Form Labels */
         const formTitleLabel = document.createElement("label");
         const formCategoryLabel = document.createElement("label");
-    
+
         formTitleLabel.setAttribute("for", "title");
         formTitleLabel.innerText = "Titre";
-    
+
         formCategoryLabel.setAttribute("for", "category");
         formCategoryLabel.innerText = "Catégorie";
-    
+
         /* Form Inputs*/
         const formTitleInput = document.createElement("input");
         const formCategoryInput = document.createElement("select");
-    
+
         formTitleInput.setAttribute("type", "text");
         formTitleInput.setAttribute("name", "title");
         formTitleInput.setAttribute("id", "title");
-    
+
         formCategoryInput.setAttribute("id", "category");
-        formCategoryInput.setAttribute("name", "categoryid")
+        formCategoryInput.setAttribute("name", "category")
         const defaultOption = document.createElement("option");
         formCategoryInput.appendChild(defaultOption);
-    
-        for(let i = 0; i < categories.length; i++) {
+
+        for (let i = 0; i < categories.length; i++) {
             const category = categories[i];
             const selectOption = document.createElement("option");
             selectOption.setAttribute("value", category.id);
             selectOption.innerText = category.name;
             formCategoryInput.appendChild(selectOption);
         }
-        
+
         formInputElement.append(formTitleLabel, formTitleInput, formCategoryLabel, formCategoryInput);
         return formInputElement;
     },
-    
-    getFormImageEl: function() {
+
+    getFormImageEl: function () {
         const formImageElement = document.createElement("div");
         formImageElement.classList.add("form-image");
-    
+
         const formImagePreview = document.createElement("img");
-        formImagePreview.style.display ="none"
-    
+        formImagePreview.style.display = "none"
+
         const formImageIcon = document.createElement("i");
         formImageIcon.classList.add("fa-regular", "fa-image");
-    
+
         const formImageInput = document.createElement("input");
         formImageInput.setAttribute("id", "image-upload");
         formImageInput.setAttribute("type", "file");
         formImageInput.setAttribute("accept", "image/jpg, image/png");
         formImageInput.setAttribute("name", "imageUrl")
-    
+
         const formImageLabel = document.createElement("label");
         formImageLabel.setAttribute("for", "image-upload");
         formImageLabel.innerText = "+ Ajouter photo"
-    
+
         const formImageSpan = document.createElement("span");
         formImageSpan.innerText = "jpg, png : 4mo max";
-        
+
         formImageInput.addEventListener("input", () => {
             const fileUrl = URL.createObjectURL(formImageInput.files[0]);
             formImagePreview.src = fileUrl;
