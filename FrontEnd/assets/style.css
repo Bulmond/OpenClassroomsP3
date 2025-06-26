@@ -468,6 +468,13 @@ a.edition {
 }
 
 .modal-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-gallery {
 	display: grid;
 	grid-template-columns: repeat(5, min-content);
 	row-gap: 29px;
@@ -513,6 +520,11 @@ hr {
 	border: #1D6154;
 	border-radius: 60px;
 	padding: 9px 50px;
+}
+
+form#add-work {
+    display: flex;
+    flex-direction: column;
 }
 
 .form-image {

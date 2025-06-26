@@ -9,7 +9,6 @@ const MODAL = {
     getModal: function () {
         let modal = null;
         const modalOpen = document.querySelector("a.edition");
-        const modalButton = document.querySelector(".modal-button");
         const openModal = function (e) {
             e.preventDefault();
             modal = document.querySelector(e.target.getAttribute("href"));
@@ -31,8 +30,9 @@ const MODAL = {
 
 
         modalOpen.addEventListener("click", openModal);
-        modalButton.addEventListener("click", MODAL.getNewWorks);
         MODAL.getModalWorks(works);
+        const modalButton = document.querySelector(".modal-button");
+        modalButton.addEventListener("click", MODAL.getNewWorks);
 
     },
 
@@ -52,25 +52,36 @@ const MODAL = {
                         "Authorization": `Bearer ${localStorage.token}`
                     }
                 });
-                if (res.ok) {
-                    console.log(`(id:${id}) deleted succesfully`);
-                    newWorks = await APP.fetchData(url);
-                    document.querySelector(".gallery").innerHTML = "";
-                    APP.getWorks(newWorks);
-                    document.querySelector(".modal-content").innerHTML = "";
-                    MODAL.getModalWorks(newWorks);
-                }
+                console.log(`(id:${id}) deleted succesfully`);
+                newWorks = await APP.fetchData(url);
+                document.querySelector(".gallery").innerHTML = "";
+                APP.getWorks(newWorks);
+                document.querySelector(".modal-content").innerHTML = "";
+                MODAL.getModalWorks(newWorks);
+                document.querySelector(".modal-button").addEventListener("click", MODAL.getNewWorks);
+                if (!res.ok) throw new Error("Failed to delete work");
             } catch (error) {
-                console.error(error);
+                console.warn(error.mes);
             }
         });
     },
 
     getModalWorks: function (works) {
+        const modalTitle = document.createElement("h3");
+        modalTitle.classList.add("modal-title");
+        modalTitle.innerText = "Galerie photo"
+
+        const modalGallery = document.createElement("div");
+        modalGallery.classList.add("modal-gallery");
+
+        const modalSeparator = document.createElement("hr");
+
+        const modalButton = document.createElement("Button");
+        modalButton.classList.add("modal-button");
+        modalButton.innerText = "Ajouter une photo"
         for (let i = 0; i < works.length; i++) {
             const work = works[i];
 
-            const modalGallery = document.querySelector(".modal-content");
             const container = document.createElement("div");
             container.classList.add("modal-image-container");
 
@@ -89,35 +100,37 @@ const MODAL = {
             container.appendChild(imageElement);
             modalGallery.appendChild(container);
         }
+        document.querySelector(".modal-content").append(modalTitle, modalGallery, modalSeparator, modalButton);
     },
 
     getNewWorks: function () {
-        const modalButton = document.querySelector(".modal-button");
-        document.querySelector(".modal-title").innerText = "Ajout photo";
-        modalButton.innerText = "Valider";
-        modalButton.removeEventListener("click", MODAL.getNewWorks);
+        const modalContent = document.querySelector(".modal-content");
+        modalContent.innerHTML = "";
+        const modalForm = MODAL.getModalForm();
+        const modalTitle = document.createElement("h3");
+        modalTitle.classList.add("modal-title");
+        modalTitle.innerText = "Ajout photo"
+
+        const modalSeparator = document.createElement("hr");
+
+        const formSubmit = document.createElement("input");
+        formSubmit.setAttribute("type", "submit");
+        formSubmit.classList.add("modal-button");
+        formSubmit.innerText = "Valider";
 
         const modalBack = document.querySelector(".modal-back");
         modalBack.style.display = "inline-block";
-
-
-        const modalContent = document.querySelector(".modal-content");
-        modalContent.classList.add("modal-form");
-        modalContent.innerHTML = "";
-        modalButton.setAttribute("form", "#add-work");
-        modalButton.setAttribute("type", "submit");
         modalBack.addEventListener("click", MODAL.getPreviousPage);
-        if (modalButton.hasAttribute("form")) {
-            modalButton.addEventListener("submit", MODAL.submitModalForm);
-        }
-        const modalForm = MODAL.getModalForm();
-        modalContent.appendChild(modalForm);
+
+        modalForm.append(modalSeparator, formSubmit);
+        modalContent.append(modalTitle ,modalForm);
+        modalForm.addEventListener("submit", MODAL.submitModalForm);
     },
 
     submitModalForm: async function (e) {
-        e.preventDefault
+        e.preventDefault();
         const formData = new FormData();
-
+        
         formData.append("title", document.getElementById("title").value);
         formData.append("category", document.getElementById("category").value);
         formData.append("image", document.getElementById("image-upload").files[0]);
@@ -129,22 +142,16 @@ const MODAL = {
                 },
                 body: formData
         });
-
             if (!res.ok) throw new Error("Work was not added to the gallery");
         } catch (err) {
             console.warn(err.message);
         }
+        return false;
     },
 
     getPreviousPage: function () {
         document.querySelector(".modal-back").removeEventListener("click", MODAL.getPreviousPage);
-        document.querySelector(".modal-title").innerText = "Galerie photos";
-        document.querySelector(".modal-button").innerText = "Ajouter une photo";
-        document.querySelector(".modal-button").removeAttribute("form");
-        document.querySelector(".modal-button").removeAttribute("type");
-        document.querySelector(".modal-button").removeEventListener("click", MODAL.submitModalForm);
         document.querySelector(".modal-content").innerHTML = "";
-        document.querySelector(".modal-content").classList.remove("modal-form")
         MODAL.getModalWorks(works);
         document.querySelector(".modal-button").addEventListener("click", MODAL.getNewWorks);
     },
@@ -153,6 +160,7 @@ const MODAL = {
         const modalForm = document.createElement("form");
         modalForm.setAttribute("id", "add-work");
         modalForm.setAttribute("name", "add-work");
+        modalForm.setAttribute("action", "./index.html");
         modalForm.setAttribute("enctype", "multipart/form-data");
         const formImage = MODAL.getFormImageEl();
         const formInput = MODAL.getFormInputEl();
@@ -182,6 +190,7 @@ const MODAL = {
         formTitleInput.setAttribute("type", "text");
         formTitleInput.setAttribute("name", "title");
         formTitleInput.setAttribute("id", "title");
+        formTitleInput.setAttribute("required", "");
 
         formCategoryInput.setAttribute("id", "category");
         formCategoryInput.setAttribute("name", "category")
@@ -211,6 +220,7 @@ const MODAL = {
         formImageIcon.classList.add("fa-regular", "fa-image");
 
         const formImageInput = document.createElement("input");
+        formImageInput.setAttribute("required", "");
         formImageInput.setAttribute("id", "image-upload");
         formImageInput.setAttribute("type", "file");
         formImageInput.setAttribute("accept", "image/jpg, image/png");

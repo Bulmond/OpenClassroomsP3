@@ -11,39 +11,39 @@ const AUTH = {
     authUser: function() {
         const loginForm = document.querySelector(".login-form");
         loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        errors = AUTH.getLoginFormErrors(emailInput.value, passwordInput.value);
+            event.preventDefault();
+            errors = AUTH.getLoginFormErrors(emailInput.value, passwordInput.value);
 
-        const loginInfo = {
-            email: emailInput.value,
-            password: passwordInput.value
-        };
-        const payload = JSON.stringify(loginInfo);
-        try {
-            let response = await fetch("http://localhost:5678/api/users/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: payload
-            });
-            if(!response.ok) throw new Error("Authentication failed");
-            
-            const bodyResponse = await response.json();
-            window.localStorage.setItem("token", bodyResponse.token);
-            window.location.href = "../index.html";            
-        } catch (error) {
-            if(error.message) {
-                console.error(error.message);
-                allInputs.forEach(input => {
-                    input.classList.add("incorrect");
+            const loginInfo = {
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+            const payload = JSON.stringify(loginInfo);
+            try {
+                let response = await fetch("http://localhost:5678/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: payload
                 });
-                if(emailInput.value !== "" || passwordInput.value !== "")
+                if(!response.ok) throw new Error("Authentication failed");
+                
+                const bodyResponse = await response.json();
+                window.localStorage.setItem("token", bodyResponse.token);
+                window.location.href = "../index.html";            
+            } catch (error) {
+                if(error.message) {
+                    console.error(error.message);
+                    allInputs.forEach(input => {
+                        input.classList.add("incorrect");
+                    });
+                    if(emailInput.value !== "" || passwordInput.value !== "")
+                        errors.push("Vos identifiants sont incorrects. ");
+                } else {
+                    allInputs.forEach(input => {
+                        input.classList.add("incorrect");
+                    });
                     errors.push("Vos identifiants sont incorrects. ");
-            } else {
-                allInputs.forEach(input => {
-                    input.classList.add("incorrect");
-                });
-                errors.push("Vos identifiants sont incorrects. ");
-            }
+                }
         }
         if(errors.length > 0) {
             AUTH.removeErrors();
