@@ -40,7 +40,7 @@ const MODAL = {
         e.stopPropagation();
     },
 
-    addIconListener: function (iconContainer, id) {
+     addIconListener: function (iconContainer, id) {
         let newWorks = null;
         iconContainer.addEventListener("click", async () => {
             try {
@@ -48,10 +48,10 @@ const MODAL = {
                     method: "DELETE",
                     headers: {
                         "Content-type": "application/json",
-                        "accept": "*/*",
                         "Authorization": `Bearer ${localStorage.token}`
                     }
                 });
+                if (!res.ok) throw new Error("Failed to delete work");
                 console.log(`(id:${id}) deleted succesfully`);
                 newWorks = await APP.fetchData(url);
                 document.querySelector(".gallery").innerHTML = "";
@@ -59,9 +59,8 @@ const MODAL = {
                 document.querySelector(".modal-content").innerHTML = "";
                 MODAL.getModalWorks(newWorks);
                 document.querySelector(".modal-button").addEventListener("click", MODAL.getNewWorks);
-                if (!res.ok) throw new Error("Failed to delete work");
             } catch (error) {
-                console.warn(error.mes);
+                console.warn(error.message);
             }
         });
     },
@@ -113,7 +112,7 @@ const MODAL = {
 
         const modalSeparator = document.createElement("hr");
 
-        const formSubmit = document.createElement("input");
+        const formSubmit = document.createElement("button");
         formSubmit.setAttribute("type", "submit");
         formSubmit.classList.add("modal-button");
         formSubmit.innerText = "Valider";
@@ -123,17 +122,26 @@ const MODAL = {
         modalBack.addEventListener("click", MODAL.getPreviousPage);
 
         modalForm.append(modalSeparator, formSubmit);
-        modalContent.append(modalTitle ,modalForm);
+        modalContent.append(modalTitle, modalForm);
         modalForm.addEventListener("submit", MODAL.submitModalForm);
     },
 
     submitModalForm: async function (e) {
         e.preventDefault();
+        const titleInput = document.getElementById("title");
+        const categoryInput = document.getElementById("category");
+        const imageInput = document.getElementById("image-upload");
+
+        if (!titleInput.value || !categoryInput.value || imageInput.files.length === 0) {
+            alert("Veuillez remplir tout les champs et sélectionner une image");
+            return;
+        }
+
         const formData = new FormData();
-        
-        formData.append("title", document.getElementById("title").value);
-        formData.append("category", document.getElementById("category").value);
-        formData.append("image", document.getElementById("image-upload").files[0]);
+
+        formData.append("title", titleInput.value);
+        formData.append("category", categoryInput.value);
+        formData.append("image", imageInput.files[0]);
         try {
             let res = await fetch(url, {
                 method: "POST",
@@ -141,15 +149,26 @@ const MODAL = {
                     "Authorization": `Bearer ${localStorage.token}`
                 },
                 body: formData
-        });
+            });
             if (!res.ok) throw new Error("Work was not added to the gallery");
+            MODAL.updateWorks();
+            MODAL.getNewWorks();
         } catch (err) {
             console.warn(err.message);
         }
-        return false;
+    },
+
+    updateWorks: async function () {
+        works = await APP.fetchData(url);
+
+        /* document.querySelector(".modal-content").innerHTML = "";
+        MODAL.getModalWorks(works); */
+        document.querySelector(".gallery").innerHTML = "";
+        APP.getWorks(works);
     },
 
     getPreviousPage: function () {
+        document.querySelector(".modal-back").style.display = "none";
         document.querySelector(".modal-back").removeEventListener("click", MODAL.getPreviousPage);
         document.querySelector(".modal-content").innerHTML = "";
         MODAL.getModalWorks(works);
@@ -160,7 +179,6 @@ const MODAL = {
         const modalForm = document.createElement("form");
         modalForm.setAttribute("id", "add-work");
         modalForm.setAttribute("name", "add-work");
-        modalForm.setAttribute("action", "./index.html");
         modalForm.setAttribute("enctype", "multipart/form-data");
         const formImage = MODAL.getFormImageEl();
         const formInput = MODAL.getFormInputEl();
@@ -245,4 +263,5 @@ const MODAL = {
         return formImageElement;
     },
 };
+
 
