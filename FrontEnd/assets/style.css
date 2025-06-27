@@ -92,10 +92,6 @@ video {
 	vertical-align: baseline;
 }
 
-html {
-	height: 100%;
-}
-
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -591,4 +587,21 @@ form#add-work {
 
 .modal-form span {
 	font-size: 10px;
+}
+
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 0.3s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

@@ -160,9 +160,7 @@ const MODAL = {
 
     updateWorks: async function () {
         works = await APP.fetchData(url);
-
-        /* document.querySelector(".modal-content").innerHTML = "";
-        MODAL.getModalWorks(works); */
+        
         document.querySelector(".gallery").innerHTML = "";
         APP.getWorks(works);
     },
